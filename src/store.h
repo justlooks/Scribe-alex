@@ -151,10 +151,10 @@ class FileStoreBase : public Store {
   // Configuration
   std::string baseFilePath;
   std::string subDirectory;
+  std::string hiveSchema;
   std::string filePath;
   std::string baseFileName;
   std::string baseSymlinkName;
-  std::string hiveSchema;
   unsigned long maxSize;
   unsigned long maxWriteSize;
   roll_period_t rollPeriod;

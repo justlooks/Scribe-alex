@@ -723,7 +723,7 @@ bool FileStore::openInternal(bool incrementFilename, struct tm* current_time) {
     }
 
     if (!success) {
-      LOG_OPEN("[%s] Failed to create directory for file <%s>",
+      LOG_OPER("[%s] Failed to create directory for file <%s>",
                categoryHandled.c_str(), file.c_str());
       setStatus("File open error");
       return false;
