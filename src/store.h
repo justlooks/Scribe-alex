@@ -153,6 +153,7 @@ class FileStoreBase : public Store {
   std::string subDirectory;
   std::string hiveSchema;
   std::string filePath;
+  std::string dateOn;
   std::string baseFileName;
   std::string baseSymlinkName;
   unsigned long maxSize;

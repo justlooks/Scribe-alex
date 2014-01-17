@@ -184,6 +184,7 @@ FileStoreBase::FileStoreBase(StoreQueue* storeq,
     baseFilePath("/tmp"),
     subDirectory(""),
     hiveSchema(""),
+    dateOn("no"),
     filePath("/tmp"),
     baseFileName(category),
     baseSymlinkName(""),
@@ -217,6 +218,7 @@ void FileStoreBase::configure(pStoreConf configuration, pStoreConf parent) {
   configuration->getString("file_path", baseFilePath);
   configuration->getString("sub_directory", subDirectory);
   configuration->getString("hive_schema", hiveSchema);
+  configuration->getString("date_on", dateOn);
   configuration->getString("use_hostname_sub_directory", tmp);
 
   if (0 == tmp.compare("yes")) {
@@ -337,6 +339,7 @@ void FileStoreBase::configure(pStoreConf configuration, pStoreConf parent) {
 void FileStoreBase::copyCommon(const FileStoreBase *base) {
   subDirectory = base->subDirectory;
   hiveSchema = base->hiveSchema;
+  dateOn = base->dateOn;
   chunkSize = base->chunkSize;
   maxSize = base->maxSize;
   maxWriteSize = base->maxWriteSize;
@@ -357,13 +360,23 @@ void FileStoreBase::copyCommon(const FileStoreBase *base) {
    * baseFileName to the category name. these are arbitrary, could be anything
    * unique
    */
-  baseFilePath = base->baseFilePath + std::string("/") + categoryHandled;
+//  baseFilePath = base->baseFilePath + std::string("/") + categoryHandled;
+  baseFilePath = base->baseFilePath;
   filePath = baseFilePath;
   if (!subDirectory.empty()) {
     filePath += "/" + subDirectory;
   }
   if (!hiveSchema.empty()) {
     filePath += "/" + hiveSchema;
+  }
+  filePath += "/" + categoryHandled;
+  if (dateOn == "yes") {
+    char mydate[10];
+    time_t now = time(NULL);
+    struct tm *timeinfo=localtime(&now);
+    sprintf(mydate,"%d-%02d-%d",timeinfo->tm_year+1900,timeinfo->tm_mon+1,timeinfo->tm_mday);
+    filePath += "/";
+    filePath += string(mydate);
   }
 
   baseFileName = categoryHandled;
